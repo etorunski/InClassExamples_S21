@@ -1,0 +1,2 @@
+rootProject.name = "InClassExamples_S21"
+include ':app'
