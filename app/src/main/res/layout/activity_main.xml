@@ -7,39 +7,61 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:layout_marginTop="27dp"
+    android:layout_marginBottom="27dp"
+    android:layout_marginLeft="48dp"
+    android:layout_marginRight="48dp"
+
+    >
 
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/leftButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
+
+        android:nextFocusLeft="@id/leftButton"
+        android:nextFocusRight="@id/middleButton"
+        android:nextFocusUp="@id/leftButton"
+        android:nextFocusDown="@id/switch1"
+
         android:text="Button"
-        app:layout_constraintEnd_toStartOf="@+id/button5"
+        app:layout_constraintEnd_toStartOf="@+id/middleButton"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button5"
+        android:nextFocusLeft="@id/leftButton"
+        android:nextFocusRight="@id/rightButton"
+        android:nextFocusUp="@id/middleButton"
+        android:nextFocusDown="@id/switch1"
+
+        android:id="@+id/middleButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Button"
-        app:layout_constraintEnd_toStartOf="@+id/button6"
+        app:layout_constraintEnd_toStartOf="@+id/rightButton"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/button4"
-        app:layout_constraintTop_toTopOf="@+id/button4" />
+        app:layout_constraintStart_toEndOf="@+id/leftButton"
+        app:layout_constraintTop_toTopOf="@+id/leftButton" />
 
     <Button
-        android:id="@+id/button6"
+        android:nextFocusLeft="@id/middleButton"
+        android:nextFocusRight="@id/rightButton"
+        android:nextFocusUp="@id/rightButton"
+        android:nextFocusDown="@id/switch1"
+
+        android:id="@+id/rightButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/button5"
-        app:layout_constraintTop_toTopOf="@+id/button5" />
+        app:layout_constraintStart_toEndOf="@+id/middleButton"
+        app:layout_constraintTop_toTopOf="@+id/middleButton" />
 
     <ImageButton
         android:id="@+id/imageButton"
@@ -48,10 +70,14 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button4"
+        app:layout_constraintTop_toBottomOf="@+id/leftButton"
         app:srcCompat="@drawable/app_icon" />
 
     <Switch
+
+        android:nextFocusUp="@id/middleButton"
+
+
         android:id="@+id/switch1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
