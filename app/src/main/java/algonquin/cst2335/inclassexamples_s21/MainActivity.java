@@ -19,38 +19,5 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);//load XML layout
 
-        //load object into Java
-
-
-        TextView mytext = findViewById(R.id.mytextview);
-
-        Button myButton = findViewById( R.id.mybutton );
-
-
-        myButton.setOnClickListener( ( vw ) -> mytext.setText("You clicked the button") );
-
-        CheckBox mycheck = findViewById(R.id.mycb);
-
-
-        mycheck.setOnCheckedChangeListener( (buttonView, isChecked) -> {
-
-            Context context = getApplicationContext();
-            CharSequence text = "Hello to everyone!";
-            int duration = Toast.LENGTH_LONG;
-
-            Toast toast = Toast.makeText(context, text, duration);
-            toast.show();
-        }  );
-
-
-        RadioButton radiobtn = findViewById(R.id.myradio);
-        radiobtn.setOnCheckedChangeListener( (buttonView, isChecked) -> {
-            Context context = getApplicationContext();
-            CharSequence text = "Hello to everyone!";
-            int duration = Toast.LENGTH_SHORT;
-
-            Toast toast = Toast.makeText(context, text, duration);
-            toast.show();
-        } );
     }
 }
