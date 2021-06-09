@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -11,9 +13,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+
 //import in the manifest
 public class ChatRoom extends AppCompatActivity {
 
+    ArrayList<ChatMessage> messages = new ArrayList<>();//hold our typed messages
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,9 +26,25 @@ public class ChatRoom extends AppCompatActivity {
         //load a layout:
         setContentView(R.layout.chatlayout);
 
+
+        EditText messageTyped = findViewById(R.id.messageEdit);
+        Button send = findViewById(R.id.sendbutton);
         RecyclerView chatList = findViewById(R.id.myrecycler);
-        chatList.setAdapter( new ChatAdapter()  );
-        chatList.setLayoutManager(new LinearLayoutManager(this));
+        ChatAdapter adt ;
+        chatList.setAdapter( adt = new ChatAdapter()  );
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        chatList.setLayoutManager(layoutManager);
+
+
+        send.setOnClickListener( click -> {
+                    ChatMessage nextMessage = new ChatMessage( messageTyped.getText().toString()  );
+                    messages.add(nextMessage);
+                    //clear the edittext:
+                    messageTyped.setText("");
+                    //refresh the list:
+                    adt.notifyItemInserted( messages.size() - 1 ); //just insert the new row:
+                }
+        );
     }
 
     private class MyRowViews extends RecyclerView.ViewHolder{
@@ -56,12 +77,17 @@ public class ChatRoom extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
-            return 10000; //how many items to show? //row layout is match_parent
+            return messages.size(); //how many items to show? //row layout is match_parent
         }
     }
 
     private class ChatMessage {  //Data model for a message in a row
         public String message;
+
+        public ChatMessage (String s)
+        {
+            message = s;
+        }
     }
 
 }
