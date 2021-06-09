@@ -1,6 +1,6 @@
 package algonquin.cst2335.inclassexamples_s21;
 
-import androidx.annotation.Nullable;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
