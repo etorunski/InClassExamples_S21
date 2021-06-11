@@ -11,6 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.InClassExamples_S21">
 
+
         <activity android:name=".ChatRoom" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,10 +19,12 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".SecondActivity"  />  <!-- call onCreate in SecondActivity -->
+        <activity android:name=".SecondActivity"  >  <!-- call onCreate in SecondActivity -->
+        </activity>
 
+        <activity android:name=".MainActivity">
 
-        <activity android:name=".MainActivity"/>
+        </activity>
 
     </application>
 
