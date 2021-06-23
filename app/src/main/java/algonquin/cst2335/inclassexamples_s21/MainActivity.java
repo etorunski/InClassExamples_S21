@@ -28,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        MyOpenHelper myOpener = new MyOpenHelper( this );
+
         passwordText = findViewById(R.id.pw);
         textView = findViewById(R.id.textView);
         login = findViewById(R.id.loginButton);
