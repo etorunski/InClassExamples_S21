@@ -1,10 +1,19 @@
 package algonquin.cst2335.inclassexamples_s21;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 
 /** This class represents the first page of the application
@@ -22,13 +31,21 @@ public class MainActivity extends AppCompatActivity {
     /**The button the user clicks to login */
     private Button login;
 
+    SQLiteDatabase theData; //not part of onCreate
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
+        //week 7
         MyOpenHelper myOpener = new MyOpenHelper( this );
+        //Open the database
+        theData = myOpener.getWritableDatabase();
+//this is all you need for opening a database
+
 
         passwordText = findViewById(R.id.pw);
         textView = findViewById(R.id.textView);
@@ -43,7 +60,27 @@ public class MainActivity extends AppCompatActivity {
             }
             else textView.setText("No ABC string was found");
 
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
 
+            String currentDateandTime = sdf.format(new Date());
+
+//insert into database:
+            ContentValues newRow = new ContentValues();
+            //put something in each column, except _id:
+            newRow.put(MyOpenHelper.col_password, password  );
+            newRow.put(MyOpenHelper.col_time_sent, currentDateandTime ); //two put() statements for each column
+//now insert:
+           long id =  theData.insert(MyOpenHelper.TABLE_NAME, null, newRow);
+            //now should be inserted
+
+            Cursor rows = theData.rawQuery("Select * from " + MyOpenHelper.TABLE_NAME + " ;" , null);
+          //index is at -1
+            int pwColumnIndex = rows.getColumnIndex( MyOpenHelper.col_password );
+            while(rows.moveToNext()) //move to next row, return false if past last row
+            {
+                String pw = rows.getString( pwColumnIndex );
+                Log.i("pw", pw);
+            }
         });
     }
 
