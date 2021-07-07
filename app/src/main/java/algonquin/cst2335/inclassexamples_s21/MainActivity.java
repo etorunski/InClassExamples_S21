@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
-
+//whole screen:
 public class MainActivity extends AppCompatActivity {
 
     @Override

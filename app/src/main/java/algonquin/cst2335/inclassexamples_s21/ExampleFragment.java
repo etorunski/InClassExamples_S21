@@ -4,9 +4,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 
+
+//part of the screen
 public class ExampleFragment extends Fragment {
 
     //because of tx.commit() in the other file
@@ -15,6 +21,37 @@ public class ExampleFragment extends Fragment {
     public View onCreateView( LayoutInflater inflater,  ViewGroup container,  Bundle savedInstanceState) {
 
         View thisLayout = inflater.inflate(R.layout.fragment_layout, container, false);
+
+        Button add = thisLayout.findViewById(R.id.addButton);
+        Button remove = thisLayout.findViewById(R.id.removeButton);
+
+        add.setOnClickListener( addClicked -> {
+
+
+            //need a fragment object:
+            DetailsFragment theFragment = new DetailsFragment(); //I created this in my other files.
+
+
+            //call parent to get fragment manager
+            //get parent:
+            MainActivity parentActivity = (MainActivity)getContext(); //returns your parent
+
+            FragmentManager fMgr =    parentActivity.getSupportFragmentManager(); // only one object
+            FragmentTransaction tx = fMgr.beginTransaction();
+
+            //either add, remove, or replace:
+            tx.add(R.id.fragmentLocation, theFragment); //load theFragment into FrameLayout with id R.id.fragmentLocation
+
+            //finally commit:
+            tx.commit(); //start the loading...
+
+
+
+        });
+
+        remove.setOnClickListener( removeClicked -> {
+
+        });
 
         return thisLayout;
     }
