@@ -31,6 +31,8 @@ public class ExampleFragment extends Fragment {
             //need a fragment object:
             DetailsFragment theFragment = new DetailsFragment(); //I created this in my other files.
 
+//1024 x 768 smallest width = 768
+// 768 x 1024 smallest width = 768
 
             //call parent to get fragment manager
             //get parent:
@@ -40,7 +42,11 @@ public class ExampleFragment extends Fragment {
             FragmentTransaction tx = fMgr.beginTransaction();
 
             //either add, remove, or replace:
-            tx.add(R.id.fragmentLocation, theFragment); //load theFragment into FrameLayout with id R.id.fragmentLocation
+            //if tablet, change the id of framelayout:
+            if(isTablet)
+                tx.add(R.id.detailsLocation, theFragment);
+            else //phone
+                tx.add(R.id.fragmentLocation, theFragment); //load theFragment into FrameLayout with id R.id.fragmentLocation
 
             //finally commit:
             tx.commit(); //start the loading...
