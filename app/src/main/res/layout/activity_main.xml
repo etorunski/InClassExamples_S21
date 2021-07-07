@@ -6,3 +6,4 @@
     android:id="@+id/fragmentLocation"
     android:background="@color/my_primary"
     />
+<!-- holds space for 1 items loaded later after onCreate-->
