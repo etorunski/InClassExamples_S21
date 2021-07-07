@@ -11,11 +11,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //a phone will only have 1 FrameLayout, tablet will have 2:
         setContentView(R.layout.activity_main); //loads immediately
 
+        // was that second frame layout loaded?
+        boolean isTablet = findViewById( R.id.detailsLocation ) != null;
 
         //need a fragment object:
-        ExampleFragment theFragment = new ExampleFragment(); //I created this in my other files.
+        ExampleFragment theFragment = new ExampleFragment(isTablet); //I created this in my other files.
 
         FragmentManager fMgr = getSupportFragmentManager(); // only one object
         FragmentTransaction tx = fMgr.beginTransaction();

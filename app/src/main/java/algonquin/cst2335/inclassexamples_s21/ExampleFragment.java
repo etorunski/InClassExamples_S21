@@ -14,6 +14,12 @@ import androidx.fragment.app.FragmentTransaction;
 
 //part of the screen
 public class ExampleFragment extends Fragment {
+    boolean isTablet ;
+
+    public ExampleFragment(boolean isT)
+    {
+        isTablet = isT;
+    }
 
     //because of tx.commit() in the other file
 //this is for inflating a view
@@ -43,6 +49,7 @@ public class ExampleFragment extends Fragment {
 
             //either add, remove, or replace:
             //if tablet, change the id of framelayout:
+
             if(isTablet)
                 tx.add(R.id.detailsLocation, theFragment);
             else //phone
@@ -56,7 +63,10 @@ public class ExampleFragment extends Fragment {
         });
 
         remove.setOnClickListener( removeClicked -> {
-
+            MainActivity parent = (MainActivity)getContext();
+//get fragment manager:
+            FragmentManager mgr = parent.getSupportFragmentManager();
+            mgr.beginTransaction().remove(this).commit();
         });
 
         return thisLayout;
