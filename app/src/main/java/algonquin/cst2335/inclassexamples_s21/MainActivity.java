@@ -2,97 +2,97 @@ package algonquin.cst2335.inclassexamples_s21;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Scanner;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
-/** This class represents the first page of the application
- *  @author Eric Torunski
- *  @version 1.0.0
- */
 public class MainActivity extends AppCompatActivity {
 
-    /** Here you describe the variable. passwordtext holds what the user typed in */
-    private EditText passwordText;
-
-    /** This represents the result of the password complexity check */
-    private TextView textView;
-
-    /**The button the user clicks to login */
-    private Button login;
-
-    SQLiteDatabase theData; //not part of onCreate
-
+    EditText theEdit;
+    TextView tv;
+    Button btn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        tv = findViewById(R.id.textView);
+        btn = findViewById(R.id.theButton);
+        theEdit = findViewById(R.id.editText);
 
 
-        //week 7
-        MyOpenHelper myOpener = new MyOpenHelper( this );
-        //Open the database
-        theData = myOpener.getWritableDatabase();
-//this is all you need for opening a database
+        btn.setOnClickListener( click -> {
 
 
-        passwordText = findViewById(R.id.pw);
-        textView = findViewById(R.id.textView);
-        login = findViewById(R.id.loginButton);
 
-        login.setOnClickListener( clk -> {
-            String password = passwordText.getText().toString();
+            //still on GUI thread, can't connect to server here
+            Executor newThread = Executors.newSingleThreadExecutor();
+            newThread.execute(  ( ) -> {
 
-            if(checkPassword( password ))//check if password is complex enough
-            {
-                textView.setText("Your password has ABC");
-            }
-            else textView.setText("No ABC string was found");
+                URL url = null;
+                try {
+                    //connect to the server:
+                    String serverURL = "https://api.openweathermap.org/data/2.5/weather?q="
+                            + URLEncoder.encode(theEdit.getText().toString(), "UTF-8")
+                            + "&appid=7e943c97096a9784391a981c4d878b22&units=metric";
 
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
 
-            String currentDateandTime = sdf.format(new Date());
+                    //on other cpu:
+                    url = new URL(serverURL);
+                    HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                    InputStream in = new BufferedInputStream(urlConnection.getInputStream());
 
-//insert into database:
-            ContentValues newRow = new ContentValues();
-            //put something in each column, except _id:
-            newRow.put(MyOpenHelper.col_password, password  );
-            newRow.put(MyOpenHelper.col_time_sent, currentDateandTime ); //two put() statements for each column
-//now insert:
-           long id =  theData.insert(MyOpenHelper.TABLE_NAME, null, newRow);
-            //now should be inserted
+                    //this converts to a String
+                    String text = (new BufferedReader(
+                            new InputStreamReader(in, StandardCharsets.UTF_8)))
+                            .lines()
+                            .collect(Collectors.joining("\n"));
 
-            Cursor rows = theData.rawQuery("Select * from " + MyOpenHelper.TABLE_NAME + " ;" , null);
-          //index is at -1
-            int pwColumnIndex = rows.getColumnIndex( MyOpenHelper.col_password );
-            while(rows.moveToNext()) //move to next row, return false if past last row
-            {
-                String pw = rows.getString( pwColumnIndex );
-                Log.i("pw", pw);
-            }
+                    //convert string to JSON object:
+
+                    JSONObject theDocument = new JSONObject( text );
+                    JSONObject coord = theDocument.getJSONObject("coord");
+                    double lat = coord.getDouble("lat");
+                    double lon = coord.getDouble("lon");
+
+                    JSONArray weatherArray = theDocument.getJSONArray("weather");
+                    JSONObject obj0 = weatherArray.getJSONObject(0);
+                    JSONObject main = theDocument.getJSONObject("main");
+                    double currentTemp = main.getDouble("temp");
+                    double min = main.getDouble("temp_min");
+                    double max = main.getDouble("temp_max");
+
+                }
+                catch (IOException | JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }  ); //run() function, run on different cpu
+
+
+
+
         });
-    }
 
-    /** This function checks if ABC is in the string.
-     *  More words for the detailed description.
-     *  More words
-     *  More words
-     *  More words
-     * @param password The string being checked
-     * @return true if ABC is in the password otherwise false.
-     */
-    private boolean checkPassword(String password) {
-        return password.contains("ABC");
     }
 }
