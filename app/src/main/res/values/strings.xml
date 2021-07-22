@@ -2,4 +2,7 @@
     <string name="app_name">InClassExamples_S21</string>
     <string name="hello_message">Hello world!</string>
     <string name="button_message">I\'m a button</string>
+
+    <string name="open">Open</string>
+    <string name="close">Close</string>
 </resources>
