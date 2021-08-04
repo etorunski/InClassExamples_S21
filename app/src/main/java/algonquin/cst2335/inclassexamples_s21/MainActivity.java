@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
             while(rows.moveToNext()) //move to next row, return false if past last row
             {
                 String pw = rows.getString( pwColumnIndex );
-                Log.i("pw", pw);
+        //        Log.i("pw", pw);
             }
         });
     }
