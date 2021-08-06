@@ -115,7 +115,7 @@ public class MainActivityTest {
 
         //assertion:
         ViewInteraction textView = onView( withId(R.id.textView) );
-        textView.check(matches(withText("Your paBC")));
+        textView.check(matches(withText("Your password has ABC")));
     }
 
     private static Matcher<View> childAtPosition(

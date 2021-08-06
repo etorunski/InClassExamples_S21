@@ -1,4 +1,5 @@
 package algonquin.cst2335.inclassexamples_s21;
+//can't use com.examples.*
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -79,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
             while(rows.moveToNext()) //move to next row, return false if past last row
             {
                 String pw = rows.getString( pwColumnIndex );
-                Log.i("pw", pw);
+ //               Log.i("pw", pw);//comment out for distribution
             }
         });
     }
